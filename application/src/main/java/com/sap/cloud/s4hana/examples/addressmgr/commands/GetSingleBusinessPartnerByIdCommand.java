@@ -8,6 +8,7 @@ import com.sap.cloud.sdk.s4hana.datamodel.odata.namespaces.businesspartner.Busin
 import com.sap.cloud.sdk.s4hana.datamodel.odata.services.BusinessPartnerService;
 
 public class GetSingleBusinessPartnerByIdCommand {
+
     private static final Logger logger = CloudLoggerFactory.getLogger(GetSingleBusinessPartnerByIdCommand.class);
 
     private final BusinessPartnerService service;
@@ -19,7 +20,22 @@ public class GetSingleBusinessPartnerByIdCommand {
     }
 
     public BusinessPartner execute() throws Exception {
-        // TODO: Replace with Virtual Data Model query
-        return null;
+        return service.getBusinessPartnerByKey(id)
+                .select(BusinessPartner.BUSINESS_PARTNER,
+                        BusinessPartner.LAST_NAME,
+                        BusinessPartner.FIRST_NAME,
+                        BusinessPartner.IS_MALE,
+                        BusinessPartner.IS_FEMALE,
+                        BusinessPartner.CREATION_DATE,
+                        BusinessPartner.TO_BUSINESS_PARTNER_ADDRESS.select(
+                                BusinessPartnerAddress.BUSINESS_PARTNER,
+                                BusinessPartnerAddress.ADDRESS_ID,
+                                BusinessPartnerAddress.COUNTRY,
+                                BusinessPartnerAddress.POSTAL_CODE,
+                                BusinessPartnerAddress.CITY_NAME,
+                                BusinessPartnerAddress.STREET_NAME,
+                                BusinessPartnerAddress.HOUSE_NUMBER
+                        )
+                ).execute();
     }
 }

@@ -6,10 +6,12 @@ import org.slf4j.Logger;
 import java.util.List;
 
 import com.sap.cloud.sdk.cloudplatform.logging.CloudLoggerFactory;
+import com.sap.cloud.sdk.s4hana.datamodel.bapi.types.BusinessArea;
 import com.sap.cloud.sdk.s4hana.datamodel.odata.namespaces.businesspartner.BusinessPartner;
 import com.sap.cloud.sdk.s4hana.datamodel.odata.services.BusinessPartnerService;
 
 public class GetAllBusinessPartnersCommand {
+
     private static final Logger logger = CloudLoggerFactory.getLogger(GetAllBusinessPartnersCommand.class);
 
     private static final String CATEGORY_PERSON = "1";
@@ -21,8 +23,11 @@ public class GetAllBusinessPartnersCommand {
     }
 
     public List<BusinessPartner> execute() throws Exception {
-        // TODO: Replace with Virtual Data Model query
-        return null;
+        return service.getAllBusinessPartner()//
+                .select(BusinessPartner.BUSINESS_PARTNER, BusinessPartner.LAST_NAME, BusinessPartner.FIRST_NAME)
+                .filter(BusinessPartner.BUSINESS_PARTNER_CATEGORY.eq(CATEGORY_PERSON))
+                .orderBy(BusinessPartner.LAST_NAME, Order.DESC)
+                .execute();
     }
 
 }

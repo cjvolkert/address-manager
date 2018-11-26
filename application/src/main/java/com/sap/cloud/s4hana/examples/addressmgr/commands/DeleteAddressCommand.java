@@ -8,6 +8,7 @@ import com.sap.cloud.sdk.cloudplatform.logging.CloudLoggerFactory;
 import com.sap.cloud.sdk.s4hana.datamodel.odata.services.BusinessPartnerService;
 
 public class DeleteAddressCommand {
+
     private static final Logger logger = CloudLoggerFactory.getLogger(DeleteAddressCommand.class);
 
     private final BusinessPartnerService service;
@@ -15,7 +16,7 @@ public class DeleteAddressCommand {
     private final String addressId;
 
     public DeleteAddressCommand(final BusinessPartnerService service,
-                                final String businessPartnerId, final String addressId) {
+            final String businessPartnerId, final String addressId) {
 
         this.service = service;
         this.businessPartnerId = businessPartnerId;
@@ -23,7 +24,11 @@ public class DeleteAddressCommand {
     }
 
     public Integer execute() throws Exception {
-        // TODO: Replace with Virtual Data Model query
-        return null;
+        BusinessPartnerAddress ad
+                = BusinessPartnerAddress.builder()
+                        .businessPartner(businessPartnerId)
+                        .addressID(addressId).build();
+        ODataDeleteResult delete = service.deleteBusinessPartnerAddress(ad).execute();
+        return delete.getHttpStatusCode();
     }
 }

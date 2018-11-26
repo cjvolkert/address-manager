@@ -7,6 +7,7 @@ import com.sap.cloud.sdk.s4hana.datamodel.odata.namespaces.businesspartner.Busin
 import com.sap.cloud.sdk.s4hana.datamodel.odata.services.BusinessPartnerService;
 
 public class CreateAddressCommand {
+
     private static final Logger logger = CloudLoggerFactory.getLogger(CreateAddressCommand.class);
 
     private final BusinessPartnerService service;
@@ -18,7 +19,6 @@ public class CreateAddressCommand {
     }
 
     public BusinessPartnerAddress execute() throws Exception {
-        // TODO: Replace with Virtual Data Model query
-        return null;
+        return service.createBusinessPartnerAddress(addressToCreate).execute();
     }
 }
